@@ -1,0 +1,43 @@
+// https://leetcode.com/problems/maximum-length-of-a-concatenated-string-with-unique-characters/submissions/
+
+/**
+ * @param {string[]} arr
+ * @return {number}
+ */
+var maxLength = function(arr) {
+    const maxLength = getMaxLengthFromUniqueSubsets(arr);
+ 
+    return maxLength;
+};
+
+// Calculate maxLength by making unique chars of subsets and then find max length of subarray while calculating unique chars of subArray
+function getMaxLengthFromUniqueSubsets(arr) {
+    let subsetArray = [new Set()];
+    let maxsize = 0;
+    
+for (let i = 0; i <= arr.length - 1; i++) {
+    const currentLength = subsetArray.length - 1;
+    
+    for (let h = 0; h <= currentLength; h++) {
+        const existSet = subsetArray[h];
+        const newSet = new Set(arr[i]);
+        
+        // If newSet size is less than current string of array, then skip
+        if (newSet.size < arr[i].length) { continue; }
+        
+        let newStringSet = new Set([...existSet, ...newSet]);
+        
+        // console.log('>newStringSet>>', newStringSet);
+        // console.log('>>size>>',existSet.size + newSet.size);
+        
+        // If newSet size is less than combining two sets
+        // then that means there is duplicate char, just ignore it by continue
+        if (newStringSet.size < existSet.size + newSet.size) { continue; }
+            
+            maxsize = Math.max(maxsize, newStringSet.size);
+            subsetArray.push(newStringSet);
+    }
+}
+    
+    return maxsize;
+} 
